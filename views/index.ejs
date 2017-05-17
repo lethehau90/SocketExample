@@ -1,0 +1,76 @@
+<html>
+<title>Nodejs Socket IO</title>
+
+<head>
+    <script src="/assets/jquery.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            var socket = io.connect('localhost:3000');
+
+            //client accept data from server
+            socket.on('Server-send-data', function(data){
+                $('#content').append(data + ', ')
+            })
+
+            socket.on("connect",function()
+            {
+                console.log("Connected to the server");
+            });
+
+            $("#mrA").click(function(){
+                //client send data in to the server
+                socket.emit('Client-send-data','hello')
+            })
+
+            $('#do').click(function(){
+                socket.emit('Client-send-color','red')
+            })
+
+            $('#xanh').click(function(){
+                socket.emit('Client-send-color','blue')
+            })
+
+            $('#vang').click(function(){
+                socket.emit('Client-send-color','yellow')
+            })
+
+            socket.on('Server-send-colorData', function(data){
+                $('body').css('background-color', data)
+            })
+
+        })
+        </script>
+</head>
+
+<body>
+    <h1>Xin chào bạn đến với Nodejs</h1>
+    <a href="#" id="mrA">Click Send</a>
+    <h2 id='content'></h2>
+
+    <style>
+        #do, #xanh, #vang {
+            width: 200px;
+            height: 100px
+        }
+        
+        #do {
+            background-color: red;
+        }
+        
+        #xanh {
+            background-color: blue;
+        }
+        
+        #vang {
+            background-color: yellow;
+        }
+    </style>
+
+    <div id="do"></div>
+    <div id="xanh"></div>
+    <div id="vang"></div>
+</body>
+
+</html>
